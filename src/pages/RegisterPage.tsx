@@ -1,5 +1,7 @@
-import { IonButton, IonCol, IonContent, IonDatetime, IonHeader, IonInput, IonItem, IonLabel, IonList, IonPage, IonRadio, IonRadioGroup, IonRow, IonSelect, IonSelectOption, IonTitle, IonToast, IonToolbar } from '@ionic/react';
+import { IonButton, IonCol, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonItemDivider, IonItemGroup, IonLabel, IonList, IonPage, IonRadio, IonRadioGroup, IonRow, IonSelect, IonSelectOption, IonTitle, IonToast, IonToolbar } from '@ionic/react';
 import { useState } from 'react';
+import {personAddOutline} from 'ionicons/icons'
+import { insertCustomer } from '../storageHandler';
 
 const RegisterPage: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
@@ -13,22 +15,21 @@ const RegisterPage: React.FC = () => {
     return new Date(isoString).toLocaleDateString("vi-VN");
   }
   function registerHandler(){
-    setShowToast(true);
-    setTimeout(()=>{setShowToast(false)},3000);
+    //setShowToast(true);
+    //setTimeout(()=>{setShowToast(false)},3000);
+    var newCustomer = {name:name,country:country,languages:languages,gender:gender,birthDate:birthDate};
+    localStorage.setItem("name",name);
+    localStorage.setItem("dob",birthDate);
+    insertCustomer(newCustomer);
   }
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>RegisterPage</IonTitle>
+          <IonTitle color="primary">RegisterPage</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Register</IonTitle>
-          </IonToolbar>
-        </IonHeader>
         <IonList>
           <IonItem>
             <IonLabel position="stacked">Name</IonLabel>
@@ -77,17 +78,19 @@ const RegisterPage: React.FC = () => {
             <IonDatetime value={birthDate} displayFormat="DD-MM-YYYY" onIonChange={e=>setBirthDate(e.detail.value!)}></IonDatetime>
           </IonItem>
         </IonList>
-        <IonButton expand="block" onClick={registerHandler}>Register</IonButton>
+        <IonButton expand="full"  onClick={registerHandler}>
+          <IonIcon icon={personAddOutline} slot="icon-only"/>
+        </IonButton>
         {name && <IonItem><IonLabel>Your Name: {name}</IonLabel></IonItem> }      
         {gender && <IonItem><IonLabel>Gender: {gender}</IonLabel></IonItem> }
         {country && <IonItem><IonLabel>Country: {country}</IonLabel></IonItem> }
         {languages && 
-        <IonItem> 
-          <IonLabel position="stacked">You can speak</IonLabel>
-          <IonList>
+        <IonItemGroup> 
+          <IonItemDivider>
+             <IonLabel color="primary"><h2>You can speak</h2></IonLabel>
+          </IonItemDivider>
             {languages.map((language,i)=> <IonItem key={i}><IonLabel>{language}</IonLabel></IonItem> )}
-          </IonList>
-        </IonItem>     
+        </IonItemGroup>     
         }
         <IonItem>
           <IonLabel>Date of Birth {formatDate(birthDate)}</IonLabel>

@@ -22,7 +22,6 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import RegisterPage from './pages/RegisterPage';
-import BottomTab from './components/BottomTab';
 import {home, personAdd} from 'ionicons/icons'
 
 const App: React.FC = () => (
